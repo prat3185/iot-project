@@ -1,0 +1,192 @@
+<html>
+
+<head>
+    <title> real time movement demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow:scroll;
+        }
+        
+        .nopad {
+            padding: 0 !important;
+            margin: 0 !important;
+            z-index: 0!important;
+        }
+        
+        h3,
+        .navbar-header {
+            margin: 0px auto;
+            text-align: center !important;
+            float: none !important;
+        }
+        
+        .try {
+            display: inline !important;
+        }
+        
+        .sidebar {
+            height: 100%;
+            margin: 0;
+            background-color: rgb(178, 176, 184);
+        }
+		
+		
+		
+		
+		ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+    background-color:#00FF00;
+}
+
+.active {
+    background-color: #4CAF50;
+}
+    </style>
+    <link href="album.css" rel="stylesheet">
+    <link href="bootstrap.css" rel="stylesheet">
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="build/three.js"></script>
+
+    <script src='js/libs/dat.gui.min.js'></script>
+
+    <script src="js/Detector.js"></script>
+    <script src="js/libs/stats.min.js"></script>
+
+    <script src="js/controls/OrbitControls.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+    <script src="index.js">
+    </script>
+    <script src="js/loaders/ColladaLoader.js"></script>
+    <script src="js/loaders/OBJLoader.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bluebird/2.9.4/bluebird.min.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script> -->
+
+   
+</script>
+<style>
+      .popup{
+            max-width: 75%;
+            height: auto;
+            background-color:blue;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 5%;
+            left: 10%;
+            padding: 5px 20px 5px 20px;
+            -moz-box-shadow: 3px 3px 5px 6px #ccc;
+            -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+            box-shadow: 1px 3px 1px 1px rgba(0, 0, 0, 0.17);
+            z-index:1109;
+        }
+    </style>
+</head>
+<body>
+    <div class="popup"><div class="text"></div></div>
+	<ul>
+  <li><a class="active" href="index.html">Home</a></li>
+  <li><a href="#news">Past Data</a></li>
+  <li><a href="#contact">Contact</a></li>
+  <li><a href="#about">About</a></li>
+  <p> <font-color="yellow">Digital Twin</font></p>
+</ul>
+    <!-- <div class="container">
+            <button onclick="moveJoint1();">Joint1</button>
+<button onclick="moveJoint2();">Joint2</button>
+<button onclick="moveJoint4();">Joint4</button>
+<button onclick="moveTop();">movetop</button>
+<button onclick="reset();">reset</button>
+        </div> -->
+    <div class="container-fluid nopad" style="width: inherit;">
+        <div class="row nopad">
+            <div class="col col-md-9 nopad">
+                <div class="row" class="col-md-9">
+                    <div id="webglcontainer"></div>
+                </div>
+                <div class="row" style="margin:5px">
+                    <div class="col-md-4">
+                        <iframe src="../charts/dynamic-line-chart.html" height="100%" width="100%"></iframe>
+                    </div>
+                    <div class="col-md-4">
+                        <iframe src="../charts/dynamic-column-chart.html" height="100%" width="100%"></iframe>
+                    </div>
+                    <div class="col-md-4">
+                        <iframe src="../charts/null-data-chart.html" height="100%" width="100%"></iframe>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <div class="col-md-3 sidebar">
+                <div class="card mb-3 box-shadow">
+                    <iframe src="../charts/pie-chart.html" height="250px" width="100%"></iframe>
+                </div>
+
+                <div class="card mb-3 box-shadow">
+                    <h3 style="color:white; background-color: red; padding: 8px" align="center">Hello World2</h3>
+                    <div class="card-body">
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    </div>
+                </div>
+
+                <div class="card mb-3 box-shadow">
+                    <h3 style="color:white; background-color: red; padding: 8px" align="center">Hello World3</h3>
+                    <div class="card-body">
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    </div>
+                </div>
+
+                <div class="card mb-3 box-shadow">
+                    <h3 style="color:white; background-color: red; padding: 8px" align="center">Hello World4</h3>
+                    <div class="card-body">
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    </div>
+                </div>
+
+                <div class="card mb-3 box-shadow">
+                    <h3 style="color:white; background-color: red; padding: 8px" align="center">Hello World4</h3>
+                    <div class="card-body">
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    </div>
+                </div>
+
+                <div class="card mb-3 box-shadow">
+                    <h3 style="color:white; background-color: red; padding: 8px" align="center">Hello World4</h3>
+                    <div class="card-body">
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+<script>
+ var temp;
+
+  var config = {
+    apiKey: "AIzaSyCMiuOCa5xe0gykLyQWjY8X0I2kz4eEvVw",
+    authDomain: "iotproject-95368.firebaseapp.com",
+    databaseURL: "https://iotproject-95368.firebaseio.com",
+    projectId: "iotproject-95368",
+    storageBucket: "iotproject-95368.appspot.com",
+    messagingSenderId: "130262740745"
+  };
+  firebase.initializeApp(config);
+
+
+
+    
+  
+  
+        window.onload = function() {
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                title: {
+                    text: "Temperature of Each Sensor"
+                },
+                axisY: {
+                    title: "Temperature (°C)",
+                    suffix: " °C"
+                },
+                data: [{
+                    type: "column",
+                    yValueFormatString: "#,### °C",
+                    indexLabel: "{y}",
+                    dataPoints: [{
+                        label: "Bioler1",
+                        y: 206
+                    }, {
+                        label: "Bioler2",
+                        y: 163
+                    }, {
+                        label: "Bioler3",
+                        y: 154
+                    }, {
+                        label: "Bioler4",
+                        y: 176
+                    }, { 
+                        label: "Bioler5",
+                        y: 184
+                    }, {
+                        label: "Bioler6",
+                        y: 122
+                    }]
+                }]
+            });
+
+
+var database = firebase.database();
+   var ref = database.ref('Sensor_Data');
+    ref.on('value',getdata,errdata);
+
+    function getdata(data){
+  temp=data.val().Sensor_Temperature;
+ 
+}
+  
+  function errdata(err){
+  console.log("Error");
+  console.log(err);}
+
+            function updateChart() {
+                var boilerColor, deltaY, yVal;
+                var dps = chart.options.data[0].dataPoints;
+               
+                function getdata(data){
+  temp=data.val().Sensor_Temperature;
+ 
+ 
+}
+              
+  
+                
+                for (var i = 0; i < dps.length; i++) {
+                    deltaY = Math.round(2 + Math.random() * (-2 - 2));
+                   
+                    yVal = deltaY + dps[i].y > 0 ? dps[i].y + deltaY : 0;
+                    boilerColor = yVal > 200 ? "#FF2500" : yVal >= 170 ? "#FF6000" : yVal < 170 ? "#6B8E23 " : null;
+                    dps[i] = {
+                        label: "Sensor " + (i + 1),
+                        y:temp,
+                        
+                        color: boilerColor
+                    };
+                    temp=temp+1;
+                    if(temp>300)
+                    temp=125;
+                }
+                chart.options.data[0].dataPoints = dps;
+                chart.render();
+                
+            };
+            updateChart();
+
+            setInterval(function() {
+                updateChart()
+            }, 500);
+
+        }
+    </script>
+</head>
+
+<body>
+    <div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+    <script src="../../canvasjs.min.js"></script>
+</body>
+
+</html>
